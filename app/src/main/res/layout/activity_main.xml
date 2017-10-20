@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_tomar_foto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="tomarFoto"
+                android:text="tomar" />
+
+            <Button
+                android:id="@+id/btn_reescalar_foto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="redimencionarImagen"
+                android:text="cuadricular" />
+
+            <Button
+                android:id="@+id/btn_enviar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="enviarFoto"
+                android:text="enviar" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_rotar_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="rotarImagen"
+                android:text="rotar" />
+
+            <Button
+                android:id="@+id/btn_bajar_densidad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="bajarDensidadImagen"
+                android:text="bajar densidad" />
+
+            <Button
+                android:id="@+id/btn_glide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="redimencionarConGlide"
+                android:text="Glide" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_foto"
+        android:layout_width="300dp"
+        android:layout_height="300dp" />
+
+    <TextView
+        android:id="@+id/txt_density"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Density: " />
+
+    <TextView
+        android:id="@+id/txt_peso_img"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Peso: " />
+
+</LinearLayout>
+
