@@ -3,6 +3,8 @@ package com.alvarez.cristian.contador.manipularimagen;
 import android.util.Log;
 import android.webkit.MimeTypeMap;
 
+import com.alvarez.cristian.contador.manipularimagen.basedatos.modelos.Imagen;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -17,20 +19,20 @@ import okhttp3.RequestBody;
  */
 
 public class EnviarImagen implements Runnable {
-    private String ruta;
+    private Imagen imagen;
 
-    public EnviarImagen(String ruta){
-        this.ruta = ruta;
+    public EnviarImagen(Imagen imagen){
+        this.imagen = imagen;
     }
 
     @Override
     public void run() {
-        subirArchivoVideo(ruta);
+        subirArchivoVideo(imagen);
     }
 
-    public void subirArchivoVideo(String ruta){// metodo
-        Log.v("ruta_archivo", ruta);
-        File file = new File(ruta);
+    public void subirArchivoVideo(Imagen imagen){// metodo
+        Log.v("ruta_archivo", imagen.getRuta());
+        File file = new File(imagen.getRuta());
         String tipo_de_contenido = getTipo(file.getPath());// si es img, mp3, video, etc
 
         String ruta_archivo = file.getAbsolutePath();
@@ -55,6 +57,9 @@ public class EnviarImagen implements Runnable {
 
             if(!response.isSuccessful()){
                 Log.v("SubirArchivoVideo", "no es exitoso");
+
+                imagen.setEstado("enviada");
+                imagen.actualizarImagen();// acutalizao el registro en la base de datos con el nuevo estado
             }else{
                 Log.v("SubirArchivoVideo", "es exitoso");
             }
