@@ -1,27 +1,22 @@
 package com.alvarez.cristian.contador.manipularimagen;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.frosquivel.magicalcamera.MagicalCamera;
 import com.frosquivel.magicalcamera.MagicalPermissions;
 
 import java.io.File;
-import java.util.concurrent.ExecutionException;
 
 import id.zelory.compressor.Compressor;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -70,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void redimencionarImagen(View v){
         if(imagenTomada != null) {
-            Bitmap bitmapRedimencinado = ReescaladorImagen.redimencionar(this, imagenTomada, 300, 300);
+            Bitmap bitmapRedimencinado = ManipuladorImagen.redimencionar(this, imagenTomada, 300, 300);
 
             imagen.setImageBitmap(bitmapRedimencinado);
 
@@ -81,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void rotarImagen(View v){
         if(imagenTomada != null){
-            imagen.setImageBitmap(ReescaladorImagen.ponerHorizontal(imagenTomada, magicalCamera));
+            imagen.setImageBitmap(ManipuladorImagen.ponerHorizontal(imagenTomada, magicalCamera));
         }else{
             Toast.makeText(this, "Tome la foto primero.", Toast.LENGTH_SHORT).show();
         }
@@ -107,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
                     .subscribe(new Consumer<File>() {
                         @Override
                         public void accept(File file) {
-                            txtPesoImg.setText("Peso KB: " + ReescaladorImagen.pesoKBytesFile(file.getAbsolutePath()));
+                            txtPesoImg.setText("Peso KB: " + ManipuladorImagen.pesoKBytesFile(file.getAbsolutePath()));
                             imagen.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
 
                             rutaImg = file.getAbsolutePath();
@@ -129,8 +124,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void redimencionarConGlide(View v){
         if(imagenTomada != null){
-            imagen.setImageBitmap(ReescaladorImagen.redimencionarGlide(this, new File(rutaImg), 300, 400));
-            txtPesoImg.setText("Peso KB: " + ReescaladorImagen.pesoKBytesFile(rutaImg));
+            imagen.setImageBitmap(ManipuladorImagen.redimencionarGlide(this, new File(rutaImg), 300, 400));
+            txtPesoImg.setText("Peso KB: " + ManipuladorImagen.pesoKBytesFile(rutaImg));
         }else{
             Toast.makeText(this, "Tome la foto primero.", Toast.LENGTH_SHORT).show();
         }
@@ -170,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
         imagenTomada = magicalCamera.getPhoto();
 
 //        txtDensidad.setText(txtDensidad.getText().toString() + magicalCamera.getPhoto().getDensity());
-        txtPesoImg.setText("Peso KB: " + ReescaladorImagen.pesoKBytesFile(rutaImg));
+        txtPesoImg.setText("Peso KB: " + ManipuladorImagen.pesoKBytesFile(rutaImg));
 
         imagen.setImageBitmap(imagenTomada);
 

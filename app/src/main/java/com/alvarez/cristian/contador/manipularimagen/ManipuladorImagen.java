@@ -22,7 +22,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by CristianAlvarez on 14/10/2017.
  */
 
-public class ReescaladorImagen {
+public class ManipuladorImagen {
     private static File rutaNuevaImg;
 
     public static Bitmap cambiarAncho(Bitmap bitmap, int nuevoAncho){
