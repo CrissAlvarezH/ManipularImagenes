@@ -2,6 +2,7 @@ package com.alvarez.cristian.contador.manipularimagen;
 
 import android.Manifest;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.annotation.NonNull;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alvarez.cristian.contador.manipularimagen.basedatos.DBHelper;
+import com.alvarez.cristian.contador.manipularimagen.basedatos.modelos.Imagen;
 import com.frosquivel.magicalcamera.MagicalCamera;
 import com.frosquivel.magicalcamera.MagicalPermissions;
 
@@ -25,7 +28,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
     private Button btnTomarFoto, btnReescalarFoto, btnRotarFoto, btnGlide, btnEnviar;
-    private ImageView imagen;
+    private ImageView imgImagen;
     private TextView txtDensidad, txtPesoImg;
 
     private MagicalCamera magicalCamera;
@@ -34,6 +37,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Bitmap imagenTomada = null;
     private String rutaImg, rutaReducida  = null;
+
+    private DBHelper dbhelper;
+    private SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +62,10 @@ public class MainActivity extends AppCompatActivity {
         btnEnviar = (Button) findViewById(R.id.btn_enviar);
         txtDensidad = (TextView) findViewById(R.id.txt_density);
         txtPesoImg = (TextView) findViewById(R.id.txt_peso_img);
-        imagen = (ImageView) findViewById(R.id.img_foto);
+        imgImagen = (ImageView) findViewById(R.id.img_foto);
+
+        dbhelper = new DBHelper(this);
+        database = dbhelper.getWritableDatabase();// creamos o abrimos la base de datos al iniciar esta activity
     }
 
     public void tomarFoto(View vista){
@@ -67,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         if(imagenTomada != null) {
             Bitmap bitmapRedimencinado = ManipuladorImagen.redimencionar(this, imagenTomada, 300, 300);
 
-            imagen.setImageBitmap(bitmapRedimencinado);
+            imgImagen.setImageBitmap(bitmapRedimencinado);
 
         }else{
             Toast.makeText(this, "Tome la foto primero.", Toast.LENGTH_SHORT).show();
@@ -76,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void rotarImagen(View v){
         if(imagenTomada != null){
-            imagen.setImageBitmap(ManipuladorImagen.ponerHorizontal(imagenTomada, magicalCamera));
+            imgImagen.setImageBitmap(ManipuladorImagen.ponerHorizontal(imagenTomada, magicalCamera));
         }else{
             Toast.makeText(this, "Tome la foto primero.", Toast.LENGTH_SHORT).show();
         }
@@ -89,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
 
             /*String nuevaRuta = magicalCamera.savePhotoInMemoryDevice(
                     nuevoBitmap,// bitmap de la foto a guardar
-                    "img",// nombre con el que se guardará la imagen
+                    "img",// nombre con el que se guardará la imgImagen
                     "prueba_imagenes",// nombre de la carpeta donde se guardarán las fotos
                     MagicalCamera.PNG,// formato de compresion
                     true // true: le agrega la fecha al nombre de la foto para no replicarlo
@@ -103,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void accept(File file) {
                             txtPesoImg.setText("Peso KB: " + ManipuladorImagen.pesoKBytesFile(file.getAbsolutePath()));
-                            imagen.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
+                            imgImagen.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
 
                             rutaImg = file.getAbsolutePath();
                         }
@@ -114,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         }
                     });
 
-            //imagen.setImageBitmap(imagenTomada);
+            //imgImagen.setImageBitmap(imagenTomada);
             txtDensidad.setText("Density: " + imagenTomada.getDensity());
             //txtPesoImg.setText("Peso KB: " + pesoKBytesFile(nuevaRuta.getAbsolutePath()));
         }else{
@@ -124,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void redimencionarConGlide(View v){
         if(imagenTomada != null){
-            imagen.setImageBitmap(ManipuladorImagen.redimencionarGlide(this, new File(rutaImg), 300, 400));
+            imgImagen.setImageBitmap(ManipuladorImagen.redimencionarGlide(this, new File(rutaImg), 300, 400));
             txtPesoImg.setText("Peso KB: " + ManipuladorImagen.pesoKBytesFile(rutaImg));
         }else{
             Toast.makeText(this, "Tome la foto primero.", Toast.LENGTH_SHORT).show();
@@ -135,12 +144,23 @@ public class MainActivity extends AppCompatActivity {
         if(imagenTomada != null) {
             // aqui iba rutaReducida != null
             if (true){
-                EnviarImagen enviarImagen = new EnviarImagen(rutaImg);
+               /* EnviarImagen enviarImagen = new EnviarImagen(rutaImg);
                 Thread hilo = new Thread(enviarImagen);
-                hilo.start();
+                hilo.start();*/
             }else{
-                Toast.makeText(this, "Redusca la imagen.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Redusca la imgImagen.", Toast.LENGTH_SHORT).show();
             }
+        }else{
+            Toast.makeText(this, "Tome la foto primero.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void guardarImagen(View v){
+        if(imagenTomada != null) {
+            Imagen imagen = new Imagen(this, rutaImg, "no_enviada");
+            imagen.insertarImagen();// insertamos en la base de datos
+
+            Toast.makeText(this, "imagen guardada", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "Tome la foto primero.", Toast.LENGTH_SHORT).show();
         }
@@ -156,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
          * guardarla en la SD card, retorna la ruta en la cual almacenó la foto */
         rutaImg = magicalCamera.savePhotoInMemoryDevice(
                 magicalCamera.getPhoto(),// bitmap de la foto a guardar
-                "img",// nombre con el que se guardará la imagen
+                "img",// nombre con el que se guardará la imgImagen
                 "prueba_imagenes",// nombre de la carpeta donde se guardarán las fotos
                 MagicalCamera.PNG,// formato de compresion
                 true // true: le agrega la fecha al nombre de la foto para no replicarlo
@@ -167,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
 //        txtDensidad.setText(txtDensidad.getText().toString() + magicalCamera.getPhoto().getDensity());
         txtPesoImg.setText("Peso KB: " + ManipuladorImagen.pesoKBytesFile(rutaImg));
 
-        imagen.setImageBitmap(imagenTomada);
+        imgImagen.setImageBitmap(imagenTomada);
 
 
 
