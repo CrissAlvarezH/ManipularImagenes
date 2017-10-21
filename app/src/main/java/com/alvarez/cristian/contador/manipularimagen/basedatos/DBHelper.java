@@ -43,7 +43,7 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.e("insertarImagen", "Imagen insertada correctamente");
     }
 
-    public void actualizarImagen(String ruta, String estado){
+    public void actualizarImagen(String ruta, String estado){// TODO mirar por que no actualiza el estado
         SQLiteDatabase database = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -59,7 +59,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public ArrayList<String> rutaImagenesNoEnviadas(){
         SQLiteDatabase database = getReadableDatabase();
 
-        Cursor cursor = database.rawQuery("SELECT * FROM imagenes WHERE estado=?",
+        Cursor cursor = database.rawQuery("SELECT * FROM imagenes WHERE estado_img=?",
                 new String[] {"no_enviada"});
 
         ArrayList<String> registosNoEnviados = new ArrayList<>();

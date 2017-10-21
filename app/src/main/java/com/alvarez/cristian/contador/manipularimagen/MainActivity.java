@@ -147,6 +147,13 @@ public class MainActivity extends AppCompatActivity {
                /* EnviarImagen enviarImagen = new EnviarImagen(rutaImg);
                 Thread hilo = new Thread(enviarImagen);
                 hilo.start();*/
+
+               // Enviaremos todas las imagenes en distintos hilos (probando)
+                for(String ruta : dbhelper.rutaImagenesNoEnviadas()){
+                    EnviarImagen enviarImagen = new EnviarImagen(new Imagen(this, ruta, "no_enviada"));
+                    Thread hilo = new Thread(enviarImagen);
+                    hilo.start();// iniciamos el hilo
+                }
             }else{
                 Toast.makeText(this, "Redusca la imgImagen.", Toast.LENGTH_SHORT).show();
             }
