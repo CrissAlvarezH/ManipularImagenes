@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void redimencionarImagen(View v){
         if(imagenTomada != null) {
-            Bitmap bitmapRedimencinado = redimencionar(this, imagenTomada, 300, 300);
+            Bitmap bitmapRedimencinado = ReescaladorImagen.redimencionar(this, imagenTomada, 300, 300);
 
             imagen.setImageBitmap(bitmapRedimencinado);
 
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void rotarImagen(View v){
         if(imagenTomada != null){
-            imagen.setImageBitmap(ponerHorizontal(imagenTomada));
+            imagen.setImageBitmap(ReescaladorImagen.ponerHorizontal(imagenTomada, magicalCamera));
         }else{
             Toast.makeText(this, "Tome la foto primero.", Toast.LENGTH_SHORT).show();
         }
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     .subscribe(new Consumer<File>() {
                         @Override
                         public void accept(File file) {
-                            txtPesoImg.setText("Peso KB: " + pesoKBytesFile(file.getAbsolutePath()));
+                            txtPesoImg.setText("Peso KB: " + ReescaladorImagen.pesoKBytesFile(file.getAbsolutePath()));
                             imagen.setImageBitmap(BitmapFactory.decodeFile(file.getAbsolutePath()));
 
                             rutaImg = file.getAbsolutePath();
@@ -129,8 +129,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void redimencionarConGlide(View v){
         if(imagenTomada != null){
-            imagen.setImageBitmap(redimencionarGlide(new File(rutaImg), 300, 400));
-            txtPesoImg.setText("Peso KB: " + pesoKBytesFile(rutaImg));
+            imagen.setImageBitmap(ReescaladorImagen.redimencionarGlide(this, new File(rutaImg), 300, 400));
+            txtPesoImg.setText("Peso KB: " + ReescaladorImagen.pesoKBytesFile(rutaImg));
         }else{
             Toast.makeText(this, "Tome la foto primero.", Toast.LENGTH_SHORT).show();
         }
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         imagenTomada = magicalCamera.getPhoto();
 
 //        txtDensidad.setText(txtDensidad.getText().toString() + magicalCamera.getPhoto().getDensity());
-        txtPesoImg.setText("Peso KB: " + pesoKBytesFile(rutaImg));
+        txtPesoImg.setText("Peso KB: " + ReescaladorImagen.pesoKBytesFile(rutaImg));
 
         imagen.setImageBitmap(imagenTomada);
 
@@ -185,64 +185,7 @@ public class MainActivity extends AppCompatActivity {
         magicalPermissions.permissionResult(requestCode, permissions, grantResults);
     }
 
-    private Bitmap redimencionar(Context contexto, Bitmap bitmapOriginal, int nuevoAncho, int nuevoAlto){
-        int anchoOriginal = bitmapOriginal.getWidth();
-        int altoOriginal = bitmapOriginal.getHeight();
-
-        // calculamos el escalado de la imagen destino
-        float anchoEscalado = ((float) nuevoAncho) / anchoOriginal;
-        float altoEscalado = ((float) nuevoAlto) / altoOriginal;
-
-        // Creamos una matrix para manipular la imagen
-        Matrix matrix = new Matrix();
-        // Redimencionamos el bitmap
-        matrix.postScale(anchoEscalado, altoEscalado);
-
-        // Volvemos a crear la imagen con los nuevos valores
-        Bitmap bitmapEscalado = Bitmap.createBitmap(bitmapOriginal, 0, 0, anchoOriginal, altoOriginal,
-                matrix, true);
-
-        return bitmapEscalado;
-    }
-
-    private Bitmap ponerHorizontal(Bitmap bitmapOriginal){
-        if(bitmapOriginal.getWidth() < bitmapOriginal.getHeight()){
-            // rotamos 90 grados la imagen pasada por parametros
-            return magicalCamera.rotatePicture(bitmapOriginal, MagicalCamera.ORIENTATION_ROTATE_90);
-        }
-
-        return bitmapOriginal;
-    }
-
-    private long pesoKBytesFile(String rutaFile){
-        Log.e("rutaFile", rutaFile+" ---");
-        File file = new File(rutaFile+"");
-
-        return (file.length() / 1024);
-    }
-
     private long pesoByteFile(String rutaFile){
         return new File(rutaFile).length();
-    }
-
-    private Bitmap redimencionarGlide(File rutaBipmap, int ancho, int alto){
-        try {
-            Bitmap bitmap = Glide.with(this)
-                 .load(rutaBipmap)
-                 .asBitmap()// obtenemos el bitmap
-                    // pasamos a la mitad del ancho y alto
-                 .override(ancho, alto)
-                 .fitCenter() // fijamos en el centro
-                 .into(-1, -1)// nos da un bitmap con el tamaño orginal hasta este punto
-                 .get();// obtenemos el bitmap
-
-            return bitmap;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
-        return null;
     }
 }
