@@ -2,9 +2,12 @@ package com.alvarez.cristian.contador.manipularimagen.basedatos;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import java.util.ArrayList;
 
 /**
  * Created by CristianAlvarez on 21/10/2017.
@@ -51,6 +54,23 @@ public class DBHelper extends SQLiteOpenHelper {
                 new String[] {ruta});
 
         Log.e("actualizarImagen", filasAfectadas+" registros afectados de la tabla imagenes");
+    }
+
+    public ArrayList<String> rutaImagenesNoEnviadas(){
+        SQLiteDatabase database = getReadableDatabase();
+
+        Cursor cursor = database.rawQuery("SELECT * FROM imagenes WHERE estado=?",
+                new String[] {"no_enviada"});
+
+        ArrayList<String> registosNoEnviados = new ArrayList<>();
+
+        if(cursor.moveToFirst()){// si hay por lo menos un registro
+            do{
+                registosNoEnviados.add(cursor.getString(0));// obtenemos la ruta (primer parametro)
+            }while (cursor.moveToNext());// pasamos el siguiente registro, si existe
+        }
+
+        return registosNoEnviados;
     }
 
     @Override
