@@ -214,84 +214,6 @@ public class MainActivity extends AppCompatActivity {
         return bitmapOriginal;
     }
 
-    private String modificarAncho(String ruta, int anchoDeseado){
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-
-        BitmapFactory.decodeFile(ruta, options);
-        int anchoOriginal = options.outWidth;
-
-        options.inScaled = true;
-        options.inDensity = anchoOriginal;
-        options.inTargetDensity = ((int) (anchoOriginal * 0.5));
-
-        Bitmap bitmapReducido = BitmapFactory.decodeFile(ruta, options);
-
-        String nuevaRuta = magicalCamera.savePhotoInMemoryDevice(
-                bitmapReducido,// bitmap de la foto a guardar
-                "img",// nombre con el que se guardará la imagen
-                "prueba_imagenes",// nombre de la carpeta donde se guardarán las fotos
-                MagicalCamera.PNG,// formato de compresion
-                true // true: le agrega la fecha al nombre de la foto para no replicarlo
-        );
-
-        //Log.e("nuevaRuta", nuevaRuta);
-
-        return nuevaRuta;
-    }
-
-    public String reducirImagen(String rutaImg, long tamanoMaximo){
-        File img = new File(rutaImg);
-        String nuevaRuta = null;
-
-        BitmapFactory.Options opciones = new BitmapFactory.Options();
-        Bitmap bitmap = null;
-        opciones.inSampleSize = 1;// esto da un 1/n el tamaño original de la imagen
-
-        while(img.length() > tamanoMaximo){
-            img = new File(rutaImg);
-            opciones.inSampleSize = opciones.inSampleSize + 1;
-
-            // creamos un bitmap en la ruta y con el tamaño en las opciones especificadas
-            bitmap = BitmapFactory.decodeFile(rutaImg, opciones);
-
-            // TODO poner metodo para eliminar la imagen antes de ser reducida
-
-            // TODO crear metodo para guardar imagen saveImage(bitmap, ruta)
-
-            nuevaRuta = magicalCamera.savePhotoInMemoryDevice(
-                    bitmap,// bitmap de la foto a guardar
-                    "img",// nombre con el que se guardará la imagen
-                    "prueba_imagenes",// nombre de la carpeta donde se guardarán las fotos
-                    MagicalCamera.PNG,// formato de compresion
-                    true // true: le agrega la fecha al nombre de la foto para no replicarlo
-            );
-
-            img = new File(nuevaRuta);
-        }
-
-        return nuevaRuta;
-    }
-
-    private String ajustarImagenPesoDeseado(String ruta, int sampleSize){
-        BitmapFactory.Options opciones = new BitmapFactory.Options();
-        Bitmap bitmap = null;
-        opciones.inSampleSize = sampleSize;// esto da un 1/n el tamaño original de la imagen
-
-        bitmap = BitmapFactory.decodeFile(ruta, opciones);
-
-        String nuevaRuta = magicalCamera.savePhotoInMemoryDevice(
-                bitmap,// bitmap de la foto a guardar
-                "img",// nombre con el que se guardará la imagen
-                "prueba_imagenes",// nombre de la carpeta donde se guardarán las fotos
-                MagicalCamera.PNG,// formato de compresion
-                true // true: le agrega la fecha al nombre de la foto para no replicarlo
-        );
-
-        return nuevaRuta;
-
-    }
-
     private long pesoKBytesFile(String rutaFile){
         Log.e("rutaFile", rutaFile+" ---");
         File file = new File(rutaFile+"");
@@ -322,26 +244,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return null;
-    }
-
-    private int calcularSampleSize(long tamOriginal, long tamDeseado){
-        long porcentajeDeseado = ((tamDeseado * 100) / tamOriginal);
-
-        // empieza desde el 1/2
-        double [] porcentajes = {50, 33.3, 25, 20, 16.6, 14.3, 12.5, 11.1, 10, 9, 8.3, 7.7, 7.1, 6.7, 6.2};
-        int [] enes = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16};
-        int n = 1;
-
-
-        for(int i=0; i<porcentajes.length; i++){
-            if(porcentajeDeseado >= (porcentajes[i] * 0.33)){
-                n = enes[i];
-                break;
-            }
-        }
-
-        Log.e("tamO, tamD, porceD, n ", tamOriginal+", "+tamDeseado+", "+porcentajeDeseado+", "+n);
-
-        return n;
     }
 }
