@@ -18,19 +18,9 @@ import okhttp3.RequestBody;
  * Created by CristianAlvarez on 23/09/2017.
  */
 
-public class EnviarImagen implements Runnable {
-    private Imagen imagen;
+public class EnviarImagen {
 
-    public EnviarImagen(Imagen imagen){
-        this.imagen = imagen;
-    }
-
-    @Override
-    public void run() {
-        subirArchivoVideo(imagen);
-    }
-
-    public void subirArchivoVideo(Imagen imagen){// metodo
+    public static void subirArchivoVideo(Imagen imagen){// metodo
         Log.v("ruta_archivo", imagen.getRuta());
         File file = new File(imagen.getRuta());
         String tipo_de_contenido = getTipo(file.getPath());// si es img, mp3, video, etc
@@ -53,7 +43,11 @@ public class EnviarImagen implements Runnable {
         try {
             okhttp3.Response response = client.newCall(request).execute();
 
-            Log.e("respuesta ", response.body().string());
+            try {
+                Log.e("respuesta ", response.body().string());
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
 
             if(!response.isSuccessful()){
                 Log.v("SubirArchivoVideo", "no es exitoso");
@@ -68,7 +62,7 @@ public class EnviarImagen implements Runnable {
         }
     }
 
-    private String getTipo(String path){// metodo 1.1
+    private static  String getTipo(String path){// metodo 1.1
         String extencion = MimeTypeMap.getFileExtensionFromUrl(path);
 
         return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extencion);
