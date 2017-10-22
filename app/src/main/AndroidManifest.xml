@@ -24,7 +24,12 @@
 
         <service
             android:name=".services.ProgresoEnvioImagenesService"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <service
+            android:name=".services.ServicieIntentarEnviar"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

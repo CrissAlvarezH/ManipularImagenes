@@ -73,5 +73,6 @@ public class ProgresoEnvioImagenesService extends IntentService {
     @Override
     public void onDestroy() {
         Log.v("onDestroy", "IntentServiceEnviarImagenes destruido");
+        ManagerServicioEnviarImagenes.pararServicio(this);// establecemos que lo esta parado
     }
 }

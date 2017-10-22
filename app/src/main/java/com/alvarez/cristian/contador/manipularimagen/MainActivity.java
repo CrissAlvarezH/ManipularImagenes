@@ -16,7 +16,9 @@ import android.widget.Toast;
 
 import com.alvarez.cristian.contador.manipularimagen.basedatos.DBHelper;
 import com.alvarez.cristian.contador.manipularimagen.basedatos.modelos.Imagen;
+import com.alvarez.cristian.contador.manipularimagen.services.ManagerServicioEnviarImagenes;
 import com.alvarez.cristian.contador.manipularimagen.services.ProgresoEnvioImagenesService;
+import com.alvarez.cristian.contador.manipularimagen.services.ServicieIntentarEnviar;
 import com.alvarez.cristian.contador.manipularimagen.utilidades.Constantes;
 import com.alvarez.cristian.contador.manipularimagen.utilidades.ManipuladorImagen;
 import com.frosquivel.magicalcamera.MagicalCamera;
@@ -63,12 +65,15 @@ public class MainActivity extends AppCompatActivity {
         btnRotarFoto = (Button) findViewById(R.id.btn_rotar_img);
         btnGlide = (Button) findViewById(R.id.btn_glide);
         btnEnviar = (Button) findViewById(R.id.btn_enviar);
-        txtDensidad = (TextView) findViewById(R.id.txt_density);
+        //txtDensidad = (TextView) findViewById(R.id.txt_density);
         txtPesoImg = (TextView) findViewById(R.id.txt_peso_img);
         imgImagen = (ImageView) findViewById(R.id.img_foto);
 
         dbhelper = new DBHelper(this);
         database = dbhelper.getWritableDatabase();// creamos o abrimos la base de datos al iniciar esta activity
+
+        // iniciamos el servicio que intenta enviar las imagenes cada x tiempo
+        startService(new Intent(this, ServicieIntentarEnviar.class));
     }
 
     public void tomarFoto(View vista){
