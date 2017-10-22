@@ -1,4 +1,4 @@
-package com.alvarez.cristian.contador.manipularimagen;
+package com.alvarez.cristian.contador.manipularimagen.utilidades;
 
 import android.content.Context;
 import android.graphics.Bitmap;

@@ -18,6 +18,7 @@ import com.alvarez.cristian.contador.manipularimagen.basedatos.DBHelper;
 import com.alvarez.cristian.contador.manipularimagen.basedatos.modelos.Imagen;
 import com.alvarez.cristian.contador.manipularimagen.services.ProgresoEnvioImagenesService;
 import com.alvarez.cristian.contador.manipularimagen.utilidades.Constantes;
+import com.alvarez.cristian.contador.manipularimagen.utilidades.ManipuladorImagen;
 import com.frosquivel.magicalcamera.MagicalCamera;
 import com.frosquivel.magicalcamera.MagicalPermissions;
 

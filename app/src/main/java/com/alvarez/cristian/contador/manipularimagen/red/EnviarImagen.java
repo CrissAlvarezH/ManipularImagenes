@@ -1,4 +1,4 @@
-package com.alvarez.cristian.contador.manipularimagen;
+package com.alvarez.cristian.contador.manipularimagen.red;
 
 import android.util.Log;
 import android.webkit.MimeTypeMap;

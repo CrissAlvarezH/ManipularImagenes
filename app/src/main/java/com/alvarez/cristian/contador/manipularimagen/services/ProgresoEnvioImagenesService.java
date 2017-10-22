@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.alvarez.cristian.contador.manipularimagen.EnviarImagen;
+import com.alvarez.cristian.contador.manipularimagen.red.EnviarImagen;
 import com.alvarez.cristian.contador.manipularimagen.basedatos.DBHelper;
 import com.alvarez.cristian.contador.manipularimagen.basedatos.modelos.Imagen;
 import com.alvarez.cristian.contador.manipularimagen.utilidades.Constantes;
