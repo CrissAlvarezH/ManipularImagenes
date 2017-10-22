@@ -23,10 +23,6 @@
         </activity>
 
         <service
-            android:name=".services.ServiceEnviarImagenes"
-            android:enabled="true"
-            android:exported="true" />
-        <service
             android:name=".services.ProgresoEnvioImagenesService"
             android:exported="false"></service>
     </application>

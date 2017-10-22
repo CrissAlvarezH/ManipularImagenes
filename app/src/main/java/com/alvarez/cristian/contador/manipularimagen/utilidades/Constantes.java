@@ -8,7 +8,7 @@ import com.alvarez.cristian.contador.manipularimagen.services.*;
 
 public class Constantes {
     /**
-     * Constantes para {@link ServiceEnviarImagenes} Y {@link ProgresoEnvioImagenesService}
+     * Constantes para {@link ProgresoEnvioImagenesService}
      * Corren y paran el servicio respectivamente
      */
     public static final String ACCION_CORRER_SERVICIO_ENVIAR_IMAGEN = "com.alvarez.cristian.contador.manipularimagen.services.action.RUN_SERVICE_IMAGES";
@@ -16,4 +16,6 @@ public class Constantes {
 
     // extra del progreso que va (imagenes enviadas)
     public static final String EXTRA_PROGRESO = "com.alvarez.cristian.contador.manipularimagen.services.extra.PROGRESS";
+    // numero de imagenes por enviar
+    public static final String EXTRA_IMAGENES_POR_ENVIAR = "com.alvarez.cristian.contador.manipularimagen.services.extra.TOTAL_IMAGES";
 }
