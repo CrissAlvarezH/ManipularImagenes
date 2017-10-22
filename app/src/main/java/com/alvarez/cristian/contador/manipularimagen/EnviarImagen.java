@@ -66,7 +66,7 @@ public class EnviarImagen {
                 return true;
             }
         } catch (IOException e) {
-            Log.v("ErrorAlEjecutar", e.getMessage());
+            Log.v("ErrorAlEjecutar",e.getClass() +" -> "+ e.getMessage());
             e.printStackTrace();
         }
 

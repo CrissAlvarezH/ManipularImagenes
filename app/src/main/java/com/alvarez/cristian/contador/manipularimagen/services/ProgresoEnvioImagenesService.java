@@ -58,12 +58,12 @@ public class ProgresoEnvioImagenesService extends IntentService {
 
             // actualizamos el progreso de la notificacion
             builder.setProgress(cantidadImagenesPorEnvira, contadorImgEnviada, false);
-            builder.setContentText("Enviando... ("+contadorImgEnviada+"/"+imagenesPorEnviar+")");
+            builder.setContentText("Enviando... ("+contadorImgEnviada+"/"+cantidadImagenesPorEnvira+")");
             // ponemos en primer plano la notificacion y le asignamos un id
             startForeground(123, builder.build());
 
-            Log.v("EnvioDeImagenes", "Progreso: ("+contadorImgEnviada+" de "+imagenesPorEnviar+
-            ") imagenes no enviadas: ("+contadorImgNoEnviada+" de "+imagenesPorEnviar+")");
+            Log.v("EnvioDeImagenes", "Progreso: ("+contadorImgEnviada+" de "+cantidadImagenesPorEnvira+
+            ") imagenes no enviadas: ("+contadorImgNoEnviada+" de "+cantidadImagenesPorEnvira+")");
         }
 
         // quitar del primer plano el proceso

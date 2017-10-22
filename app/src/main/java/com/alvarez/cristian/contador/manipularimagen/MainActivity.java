@@ -16,6 +16,8 @@ import android.widget.Toast;
 
 import com.alvarez.cristian.contador.manipularimagen.basedatos.DBHelper;
 import com.alvarez.cristian.contador.manipularimagen.basedatos.modelos.Imagen;
+import com.alvarez.cristian.contador.manipularimagen.services.ProgresoEnvioImagenesService;
+import com.alvarez.cristian.contador.manipularimagen.utilidades.Constantes;
 import com.frosquivel.magicalcamera.MagicalCamera;
 import com.frosquivel.magicalcamera.MagicalPermissions;
 
@@ -145,16 +147,12 @@ public class MainActivity extends AppCompatActivity {
         if(true) {
             // aqui iba rutaReducida != null
             if (true){
-               /* EnviarImagen enviarImagen = new EnviarImagen(rutaImg);
-                Thread hilo = new Thread(enviarImagen);
-                hilo.start();*/
+                Intent i = new Intent(this, ProgresoEnvioImagenesService.class);
+                // establecemos una accion en el intent de correr el servicio de enviar imagenes
+                i.setAction(Constantes.ACCION_CORRER_SERVICIO_ENVIAR_IMAGEN);
 
-               // Enviaremos todas las imagenes en distintos hilos (probando)
-                for(String ruta : dbhelper.rutaImagenesNoEnviadas()){
-                    EnviarImagen enviarImagen = new EnviarImagen(new Imagen(this, ruta, "no_enviada"));
-                    Thread hilo = new Thread(enviarImagen);
-                    hilo.start();// iniciamos el hilo
-                }
+                // iniciamos el servicio, el se destruye una vez termina la pila de intens
+                startService(i);
             }else{
                 Toast.makeText(this, "Redusca la imgImagen.", Toast.LENGTH_SHORT).show();
             }

@@ -59,7 +59,9 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase database = getReadableDatabase();
 
         Cursor cursor = database.rawQuery("SELECT * FROM imagenes WHERE estado_img=?",
-                new String[] {"no_enviada"});
+                new String[] {"no_enviada"}); // <-esa es la linea de codigo que debe ir en ves de la siguiente
+
+        //Cursor cursor = database.rawQuery("SELECT * FROM imagenes", null);// pruebas
 
         ArrayList<String> registosNoEnviados = new ArrayList<>();
 
