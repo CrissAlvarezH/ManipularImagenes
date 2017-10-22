@@ -25,7 +25,7 @@ public class EnviarImagen {
      * @param imagen imagen que se quiere enviar
      * @return true: imagen enviada correctamente
      */
-    public static boolean subirArchivoVideo(Imagen imagen){// metodo
+    public static boolean subirArchivo(Imagen imagen){// metodo
         Log.v("ruta_archivo", imagen.getRuta());
         File file = new File(imagen.getRuta());
         String tipo_de_contenido = getTipo(file.getPath());// si es img, mp3, video, etc
