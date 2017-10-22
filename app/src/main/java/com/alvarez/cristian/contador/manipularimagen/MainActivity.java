@@ -141,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void enviarFoto(View v){
-        if(imagenTomada != null) {
+        // aqui iba imagenTomada != null
+        if(true) {
             // aqui iba rutaReducida != null
             if (true){
                /* EnviarImagen enviarImagen = new EnviarImagen(rutaImg);

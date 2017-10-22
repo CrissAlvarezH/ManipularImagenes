@@ -57,11 +57,10 @@ public class EnviarImagen implements Runnable {
 
             if(!response.isSuccessful()){
                 Log.v("SubirArchivoVideo", "no es exitoso");
-
-                imagen.setEstado("enviada");
-                imagen.actualizarImagen();// acutalizao el registro en la base de datos con el nuevo estado
             }else{
                 Log.v("SubirArchivoVideo", "es exitoso");
+                imagen.setEstado("enviada");
+                imagen.actualizarImagen();// acutalizao el registro en la base de datos con el nuevo estado
             }
         } catch (IOException e) {
             Log.v("ErrorAlEjecutar", e.getMessage());

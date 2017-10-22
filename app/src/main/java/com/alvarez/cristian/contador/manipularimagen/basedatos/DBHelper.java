@@ -43,11 +43,10 @@ public class DBHelper extends SQLiteOpenHelper {
             Log.e("insertarImagen", "Imagen insertada correctamente");
     }
 
-    public void actualizarImagen(String ruta, String estado){// TODO mirar por que no actualiza el estado
+    public void actualizarImagen(String ruta, String estado){
         SQLiteDatabase database = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put("direccion_img", ruta);
         contentValues.put("estado_img", estado);
 
         int filasAfectadas = database.update("imagenes", contentValues, "direccion_img = ?",
