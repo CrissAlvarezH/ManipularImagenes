@@ -20,7 +20,12 @@ import okhttp3.RequestBody;
 
 public class EnviarImagen {
 
-    public static void subirArchivoVideo(Imagen imagen){// metodo
+    /**
+     * Envia una imagen a un servidor
+     * @param imagen imagen que se quiere enviar
+     * @return true: imagen enviada correctamente
+     */
+    public static boolean subirArchivoVideo(Imagen imagen){// metodo
         Log.v("ruta_archivo", imagen.getRuta());
         File file = new File(imagen.getRuta());
         String tipo_de_contenido = getTipo(file.getPath());// si es img, mp3, video, etc
@@ -51,15 +56,21 @@ public class EnviarImagen {
 
             if(!response.isSuccessful()){
                 Log.v("SubirArchivoVideo", "no es exitoso");
+
+                return false;
             }else{
                 Log.v("SubirArchivoVideo", "es exitoso");
                 imagen.setEstado("enviada");
                 imagen.actualizarImagen();// acutalizao el registro en la base de datos con el nuevo estado
+
+                return true;
             }
         } catch (IOException e) {
             Log.v("ErrorAlEjecutar", e.getMessage());
             e.printStackTrace();
         }
+
+        return false;
     }
 
     private static  String getTipo(String path){// metodo 1.1
