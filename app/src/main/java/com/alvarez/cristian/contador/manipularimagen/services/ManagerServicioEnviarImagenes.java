@@ -18,12 +18,6 @@ public class ManagerServicioEnviarImagenes {
     public static void iniciarServicio(Context contexto){
         Log.v("iniciarServicio, on", estaEncendido(contexto)+"");
         if(!estaEncendido(contexto)) {
-            Intent i = new Intent(contexto, ProgresoEnvioImagenesService.class);
-            // establecemos una accion en el intent de correr el servicio de enviar imagenes
-            i.setAction(Constantes.ACCION_CORRER_SERVICIO_ENVIAR_IMAGEN);
-
-            // iniciamos el servicio, el se destruye una vez termina la pila de intens
-            contexto.startService(i);
             editarPreferences(contexto, "on");
         }
     }

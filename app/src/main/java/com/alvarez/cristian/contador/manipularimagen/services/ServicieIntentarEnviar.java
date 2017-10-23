@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.alvarez.cristian.contador.manipularimagen.basedatos.DBHelper;
 import com.alvarez.cristian.contador.manipularimagen.utilidades.Constantes;
+import com.alvarez.cristian.contador.manipularimagen.utilidades.RedUtils;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,8 +47,8 @@ public class ServicieIntentarEnviar extends Service {
 
         @Override
         public void run() {
-            // si hay mas de una imagen por enviar
-            if(dbHelper.rutaImagenesNoEnviadas().size() > 0){
+            // si hay mas de una imagen por enviar y esta conectado a una red de internet
+            if(dbHelper.rutaImagenesNoEnviadas().size() > 0 && RedUtils.estaNetDisponible(getApplicationContext())){
                 Log.v("Imagenes", "Hay "+dbHelper.rutaImagenesNoEnviadas().size()+" imagenes por enviar.");
                 if(!ManagerServicioEnviarImagenes.estaEncendido(getApplicationContext())){
                     Intent i = new Intent(getApplicationContext(), ProgresoEnvioImagenesService.class);
@@ -59,6 +60,8 @@ public class ServicieIntentarEnviar extends Service {
                 }else{
                     Log.v("IntentService", "Esta encendido");
                 }
+            }else{
+                Log.v("Imagenes", "No hay imagenes por enviar o no esta conectado a una red.");
             }
         }
     }

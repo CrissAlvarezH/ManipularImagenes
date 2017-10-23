@@ -9,6 +9,7 @@ import com.alvarez.cristian.contador.manipularimagen.red.EnviarImagen;
 import com.alvarez.cristian.contador.manipularimagen.basedatos.DBHelper;
 import com.alvarez.cristian.contador.manipularimagen.basedatos.modelos.Imagen;
 import com.alvarez.cristian.contador.manipularimagen.utilidades.Constantes;
+import com.alvarez.cristian.contador.manipularimagen.utilidades.RedUtils;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,8 @@ public class ProgresoEnvioImagenesService extends IntentService {
 
             // si la accion es correr el servicio de enviar las imagenes
             if(Constantes.ACCION_CORRER_SERVICIO_ENVIAR_IMAGEN.equals(action)){
+                ManagerServicioEnviarImagenes.iniciarServicio(this);// establecemos que está iniciado
+
                 enviarImagenes();
             }
         }
