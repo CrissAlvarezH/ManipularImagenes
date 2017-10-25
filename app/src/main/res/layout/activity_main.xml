@@ -85,10 +85,35 @@
 
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/img_foto"
-                android:layout_width="300dp"
-                android:layout_height="300dp" />
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/img_foto"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp" />
+
+                <LinearLayout
+                    android:id="@+id/layout_progreso"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <ProgressBar
+                        android:id="@+id/barra_progreso"
+                        android:layout_width="66dp"
+                        android:layout_height="66dp" />
+
+                    <TextView
+                        android:text="Guardando imagen..."
+                        android:textSize="12sp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/txt_density"
