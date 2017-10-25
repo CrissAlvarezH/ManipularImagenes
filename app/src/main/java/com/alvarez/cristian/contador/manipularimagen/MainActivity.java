@@ -1,6 +1,7 @@
 package com.alvarez.cristian.contador.manipularimagen;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnTomarFoto, btnReescalarFoto, btnRotarFoto, btnGlide, btnEnviar;
     private ImageView imgImagen;
     private TextView txtDensidad, txtPesoImg;
+    private LinearLayout layoutProgreso;
 
     private MagicalCamera magicalCamera;
     private MagicalPermissions magicalPermissions;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private DBHelper dbhelper;
     private SQLiteDatabase database;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         //txtDensidad = (TextView) findViewById(R.id.txt_density);
         txtPesoImg = (TextView) findViewById(R.id.txt_peso_img);
         imgImagen = (ImageView) findViewById(R.id.img_foto);
+        layoutProgreso = (LinearLayout) findViewById(R.id.layout_progreso);
 
         dbhelper = new DBHelper(this);
         database = dbhelper.getWritableDatabase();// creamos o abrimos la base de datos al iniciar esta activity
@@ -184,25 +189,34 @@ public class MainActivity extends AppCompatActivity {
 
         magicalCamera.resultPhoto(requestCode, resultCode, data);
 
-        /*Guarda la foto en la memoria interna del dispositivo, si no tiene espacio, pasa a
-         * guardarla en la SD card, retorna la ruta en la cual almacenó la foto */
-        rutaImg = magicalCamera.savePhotoInMemoryDevice(
-                magicalCamera.getPhoto(),// bitmap de la foto a guardar
-                "img",// nombre con el que se guardará la imgImagen
-                "prueba_imagenes",// nombre de la carpeta donde se guardarán las fotos
-                MagicalCamera.PNG,// formato de compresion
-                true // true: le agrega la fecha al nombre de la foto para no replicarlo
-        );
+        layoutProgreso.setVisibility(View.VISIBLE);// Hacemos visible el progreso
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                /*Guarda la foto en la memoria interna del dispositivo, si no tiene espacio, pasa a
+                * guardarla en la SD card, retorna la ruta en la cual almacenó la foto */
+                rutaImg = magicalCamera.savePhotoInMemoryDevice(
+                        magicalCamera.getPhoto(),// bitmap de la foto a guardar
+                        "img",// nombre con el que se guardará la imgImagen
+                        "prueba_imagenes",// nombre de la carpeta donde se guardarán las fotos
+                        MagicalCamera.PNG,// formato de compresion
+                        true // true: le agrega la fecha al nombre de la foto para no replicarlo
+                );
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        txtPesoImg.setText("Peso KB: " + ManipuladorImagen.pesoKBytesFile(rutaImg));
+                        layoutProgreso.setVisibility(View.GONE);// ocultamos el progreso
+                        imgImagen.setImageBitmap(imagenTomada);
+                    }
+                });
+            }
+        }).start();
+
 
         imagenTomada = magicalCamera.getPhoto();
-
-//        txtDensidad.setText(txtDensidad.getText().toString() + magicalCamera.getPhoto().getDensity());
-        txtPesoImg.setText("Peso KB: " + ManipuladorImagen.pesoKBytesFile(rutaImg));
-
-        imgImagen.setImageBitmap(imagenTomada);
-
-
-
     }
 
     @Override
