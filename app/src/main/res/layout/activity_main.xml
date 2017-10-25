@@ -108,6 +108,9 @@
                         android:layout_height="66dp" />
 
                     <TextView
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:background="@drawable/fondo_redondeado"
                         android:text="Guardando imagen..."
                         android:textSize="12sp"
                         android:layout_width="wrap_content"
