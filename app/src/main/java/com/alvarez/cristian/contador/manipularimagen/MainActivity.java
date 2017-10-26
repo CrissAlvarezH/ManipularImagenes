@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         btnRotarFoto = (Button) findViewById(R.id.btn_rotar_img);
         btnGlide = (Button) findViewById(R.id.btn_glide);
         btnEnviar = (Button) findViewById(R.id.btn_enviar);
-        //txtDensidad = (TextView) findViewById(R.id.txt_density);
+        txtDensidad = (TextView) findViewById(R.id.txt_density);
         txtPesoImg = (TextView) findViewById(R.id.txt_peso_img);
         imgImagen = (ImageView) findViewById(R.id.img_foto);
         layoutProgreso = (LinearLayout) findViewById(R.id.layout_progreso);
@@ -118,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
             );*/
 
             new Compressor(this)
+                    .setMaxWidth(400)
+                    .setMaxHeight(300)
                     .compressToFileAsFlowable(new File(rutaImg))
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
@@ -194,10 +196,12 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Bitmap bitmap = ManipuladorImagen.ponerHorizontal(magicalCamera.getPhoto(), magicalCamera);
+
                 /*Guarda la foto en la memoria interna del dispositivo, si no tiene espacio, pasa a
                 * guardarla en la SD card, retorna la ruta en la cual almacenó la foto */
                 rutaImg = magicalCamera.savePhotoInMemoryDevice(
-                        magicalCamera.getPhoto(),// bitmap de la foto a guardar
+                        bitmap,// bitmap de la foto a guardar
                         "img",// nombre con el que se guardará la imgImagen
                         "prueba_imagenes",// nombre de la carpeta donde se guardarán las fotos
                         MagicalCamera.PNG,// formato de compresion
@@ -209,14 +213,13 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         txtPesoImg.setText("Peso KB: " + ManipuladorImagen.pesoKBytesFile(rutaImg));
                         layoutProgreso.setVisibility(View.GONE);// ocultamos el progreso
+                        imagenTomada = magicalCamera.getPhoto();
                         imgImagen.setImageBitmap(imagenTomada);
                     }
                 });
             }
         }).start();
 
-
-        imagenTomada = magicalCamera.getPhoto();
     }
 
     @Override
