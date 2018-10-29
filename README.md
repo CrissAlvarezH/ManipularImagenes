@@ -22,7 +22,7 @@ MagicalCamera, un Layout con un ProgressBar y un texto aparecen mientras la imag
 
 <img src="https://crissalvarezh.github.io/ImagenesRepos/imgs/manipulador_imgs/rotal_img.jpeg"  width="300px" >
 
-- Comprimir imagen para bajar el peso, en este caso pasó de 1954 BK a 48 BK, se utiliza la libreria Compressor
+- Comprimir imagen para bajar el peso, en este caso pasó de 1954 KB a 48 KB, se utiliza la libreria Compressor
 
 <img src="https://crissalvarezh.github.io/ImagenesRepos/imgs/manipulador_imgs/bajar_peso_img.jpeg"  width="300px" >
 
