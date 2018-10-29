@@ -203,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
                 rutaImg = magicalCamera.savePhotoInMemoryDevice(
                         bitmap,// bitmap de la foto a guardar
                         "img",// nombre con el que se guardará la imgImagen
-                        "prueba_imagenes",// nombre de la carpeta donde se guardarán las fotos
+                        "Imagenes",// nombre de la carpeta donde se guardarán las fotos
                         MagicalCamera.PNG,// formato de compresion
                         true // true: le agrega la fecha al nombre de la foto para no replicarlo
                 );
